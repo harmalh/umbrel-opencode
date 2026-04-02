@@ -1,17 +1,27 @@
 manifestVersion: 1.1
 id: harmalh-opencode
 name: OpenCode
-tagline: Minimal Umbrel stub — replace with real OpenCode service
-icon: https://svgur.com/i/mvA.svg
+tagline: AI coding agent — setup in browser, run via Umbrel Terminal
+icon: https://raw.githubusercontent.com/harmalh/umbrel-opencode/main/assets/icon.svg
 category: developer
-version: "0.1.0"
+version: "0.2.0"
 port: 80
 description: >-
-  Placeholder web page served by nginx. Use this to validate the community store
-  and Umbrel install path before swapping in a real OpenCode container.
+  Run OpenCode (open-source AI coding agent) on your Umbrel. The dashboard opens
+  a setup page in the browser; the official multi-arch image from Anomaly runs in
+  the background with persistent data under this app’s folder.
+
+
+  Interactive use is through the terminal: open Umbrel Settings → Advanced →
+  Terminal and run docker exec into the opencode container (see the setup page
+  for exact commands). Configure LLM providers per OpenCode docs — never commit
+  API keys.
 
 
   **Install via community store:** https://github.com/harmalh/umbrel-community-store
+
+
+  **Upstream:** https://opencode.ai/docs/ · Image: ghcr.io/anomalyco/opencode
 developer: Harm Alhusen
 website: https://github.com/harmalh/umbrel-opencode
 submitter: Harm Alhusen
@@ -20,7 +30,9 @@ repo: https://github.com/harmalh/umbrel-opencode
 support: https://github.com/harmalh/umbrel-opencode/issues
 gallery: []
 releaseNotes: >-
-  Initial minimal nginx stub for native Umbrel testing.
+  Real OpenCode service: official ghcr.io/anomalyco/opencode (beta) with
+  persistent HOME=/data and workspace directory; nginx landing page with exec
+  instructions.
 dependencies: []
 path: ""
 defaultUsername: ""

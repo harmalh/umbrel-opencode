@@ -1,25 +1,79 @@
 #!/bin/bash
 set -Eeuo pipefail
 
-mkdir -p "${APP_DATA_DIR}/www"
-if [ ! -f "${APP_DATA_DIR}/www/index.html" ]; then
-    cat > "${APP_DATA_DIR}/www/index.html" << 'HTML'
+mkdir -p "${APP_DATA_DIR}/www" "${APP_DATA_DIR}/data/workspace"
+
+cat > "${APP_DATA_DIR}/www/index.html" << 'HTML'
 <!DOCTYPE html>
 <html lang="en">
 <head>
   <meta charset="utf-8"/>
-  <title>OpenCode (stub)</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <title>OpenCode on Umbrel</title>
   <style>
-    body { font-family: system-ui, sans-serif; max-width: 40rem; margin: 2rem; }
-    code { background: #f4f4f4; padding: 0.1rem 0.3rem; }
+    body { font-family: system-ui, sans-serif; max-width: 44rem; margin: 2rem; line-height: 1.5; color: #1a1a1a; }
+    code { background: #f0f0f0; padding: 0.15rem 0.35rem; border-radius: 4px; font-size: 0.9em; }
+    h2 { margin-top: 1.75rem; font-size: 1.1rem; }
+    a { color: #0b57d0; }
+    ul { padding-left: 1.25rem; }
   </style>
 </head>
 <body>
   <h1>OpenCode</h1>
-  <p>Minimal Umbrel placeholder. Replace with the real OpenCode image and
-  configuration.</p>
-  <p>Community store: <code>harmalh/umbrel-community-store</code></p>
+  <p>
+    <a href="https://opencode.ai/">OpenCode</a> is an open-source AI coding agent (terminal UI).
+    Umbrel opens this <strong>setup page</strong> in the browser; the agent itself runs inside the
+    <code>opencode</code> container. Use Umbrel&rsquo;s terminal or <code>docker exec</code> for the TUI.
+  </p>
+
+  <h2>Documentation</h2>
+  <ul>
+    <li><a href="https://opencode.ai/docs/">Install &amp; configure</a> (providers, API keys, <code>/connect</code>)</li>
+    <li><a href="https://github.com/anomalyco/opencode/pkgs/container/opencode">Official container image</a> (GHCR)</li>
+  </ul>
+
+  <h2>Persistent data</h2>
+  <p>
+    App data on the Umbrel host is under this app&rsquo;s folder. Inside the container, <code>HOME</code> is
+    <code>/data</code> (so config such as <code>.config</code> lives on disk under <code>data/</code>).
+    Put projects in <code>/data/workspace</code> (host: <code>data/workspace/</code>).
+  </p>
+
+  <h2>Run OpenCode (interactive)</h2>
+  <p>On the Umbrel device: <strong>Settings → Advanced → Terminal</strong> (or SSH), then:</p>
+  <ul>
+    <li>
+      Open a shell in the agent container:<br/>
+      <code>docker exec -it harmalh-opencode_opencode_1 /bin/sh</code>
+    </li>
+    <li>
+      Example: open the TUI in the persisted workspace:<br/>
+      <code>docker exec -it harmalh-opencode_opencode_1 sh -c 'cd /data/workspace &amp;&amp; opencode'</code>
+    </li>
+  </ul>
+  <p>
+    If <code>opencode</code> is not on <code>PATH</code> in the shell, run <code>which opencode</code> or check upstream docs
+    for the binary location in the image.
+  </p>
+
+  <h2>Secrets</h2>
+  <p>
+    Do <strong>not</strong> commit API keys. Configure providers per
+    <a href="https://opencode.ai/docs/">OpenCode docs</a> inside the container or via files under <code>data/</code>.
+    Do not use Umbrel <code>APP_SEED</code> as a substitute for third-party API keys.
+  </p>
+
+  <h2>Logs</h2>
+  <ul>
+    <li>Umbrel app <strong>⋮</strong> → logs, or <code>docker logs harmalh-opencode_opencode_1</code></li>
+  </ul>
+
+  <h2>Packaging</h2>
+  <p>
+    Community store: <a href="https://github.com/harmalh/umbrel-community-store">harmalh/umbrel-community-store</a><br/>
+    Source: <a href="https://github.com/harmalh/umbrel-opencode">harmalh/umbrel-opencode</a>
+    · <a href="https://github.com/harmalh/umbrel-opencode/issues">Issues</a>
+  </p>
 </body>
 </html>
 HTML
-fi

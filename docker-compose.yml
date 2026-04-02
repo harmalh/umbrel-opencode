@@ -12,3 +12,19 @@ services:
     init: true
     volumes:
       - ${APP_DATA_DIR}/www:/usr/share/nginx/html:ro
+
+  # Official multi-arch image (amd64 + arm64):
+  # https://github.com/anomalyco/opencode/pkgs/container/opencode
+  # Interactive TUI: docker exec -it harmalh-opencode_opencode_1 ...
+  # Pin digest for reproducible installs: imagetools inspect on this ref.
+  opencode:
+    image: ghcr.io/anomalyco/opencode:beta
+    restart: on-failure
+    init: true
+    stop_grace_period: 1m
+    entrypoint: ["/bin/sh", "-c"]
+    command: ["sleep infinity"]
+    environment:
+      HOME: /data
+    volumes:
+      - ${APP_DATA_DIR}/data:/data
