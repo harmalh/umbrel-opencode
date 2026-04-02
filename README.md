@@ -2,45 +2,51 @@
 
 ## Purpose
 
-Placeholder repository for a future **OpenCode** app on **Umbrel**. This repo holds the Umbrel-oriented layout (manifest, compose, CI) until application details are implemented.
+Packaging repo for **OpenCode** on Umbrel. It currently ships a **minimal nginx
+stub** so you can validate the native install path via the community store
+before replacing it with a real OpenCode container.
 
 ## Intended Umbrel app role
 
-Run OpenCode (or your chosen distribution) as an installable Umbrel app with defined networking and persistence. Exact behavior is **TODO**.
+Run OpenCode as a native Umbrel app with a web UI or setup page. The stub
+proves compose, hooks, and store metadata; swap in a real image when ready.
+
+## Canonical install surface
+
+Add the community store in umbrelOS:
+
+`https://github.com/harmalh/umbrel-community-store`
+
+Install **OpenCode** (`harmalh-opencode`) from that store. Copy packaging into
+the store’s `harmalh-opencode/` folder when you cut a release (see store
+`docs/RELEASE_CHECKLIST.md`).
 
 ## Current status
 
-**Scaffold only** — `docker-compose.yml` and `umbrel-app.yml` are minimal placeholders. Do not treat this as production-ready.
+**Minimal nginx stub** (`nginx:1.25-alpine`) with `hooks/pre-start` seeding
+`index.html` under `APP_DATA_DIR/www`. Not a production OpenCode deployment.
 
 ## Local development notes
 
-- Clone this repo and open the folder as its own git root in your editor.
-- Replace the `placeholder` service in `docker-compose.yml` with real images and volumes when you have a build.
-- Fill in `umbrel-app.yml` (icon URL, tagline, port, description) before publishing to a store.
+- `id` in `umbrel-app.yml` is `harmalh-opencode` to match the community store
+  folder name and Umbrel’s `APP_HOST` (`harmalh-opencode_web_1`).
+- Replace `web` service with your real image; keep `app_proxy` env in sync with
+  `{folder}_{service}_1`.
 
 ## Local testing notes
 
-- `docker compose config` should succeed (also run in CI).
-- On-device testing on Umbrel: **TODO** after a real stack exists.
+- `docker compose config` with `APP_DATA_DIR` set (CI does this).
+- Device testing: follow `umbrel-community-store/docs/UMBREL_DEVICE_TESTING.md`.
 
 ## CI/CD overview
 
 | Workflow | Purpose |
 |----------|---------|
-| `.github/workflows/ci.yml` | On push/PR to `main`: YAML parse for `docker-compose.yml`, `umbrel-app.yml`, and workflows; runs `docker compose config`. |
-
-## Pushing to GitHub
-
-If this is still an empty remote, after your first commit:
-
-```bash
-git branch -M main
-git push -u origin main
-```
+| `.github/workflows/ci.yml` | YAML validation and `docker compose config` on `main`. |
 
 ## TODO / roadmap
 
-- Define the actual container image, ports, volumes, and Umbrel `app_proxy` expectations.
-- Add `.env.example` when configuration surface is known.
-- Add image build and GHCR push jobs (see TODO in `ci.yml`).
-- Optional: `scripts/` and `docs/` as the app grows.
+- Replace nginx with the real OpenCode image and configuration.
+- Custom icon and gallery in `umbrel-app.yml`.
+- Image build + GHCR (see TODO in `ci.yml`).
+- Optional `.env.example` when env surface is known.
