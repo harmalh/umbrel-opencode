@@ -16,9 +16,9 @@ services:
   # Official multi-arch image (amd64 + arm64):
   # https://github.com/anomalyco/opencode/pkgs/container/opencode
   # Interactive TUI: docker exec -it harmalh-opencode_opencode_1 ...
-  # Pin digest for reproducible installs: imagetools inspect on this ref.
+  # Digest pinned from ghcr.io/anomalyco/opencode:beta for reproducible installs.
   opencode:
-    image: ghcr.io/anomalyco/opencode:beta
+    image: ghcr.io/anomalyco/opencode:beta@sha256:778c74ca292f97f86df5abb4c2b9894aca5da8e11422fba67dd21be59d94958d
     restart: on-failure
     init: true
     stop_grace_period: 1m

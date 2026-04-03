@@ -4,8 +4,8 @@ name: OpenCode
 tagline: AI coding agent — setup in browser, run via Umbrel Terminal
 icon: https://raw.githubusercontent.com/harmalh/umbrel-opencode/main/assets/icon.svg
 category: developer
-version: "0.2.0"
-port: 80
+version: "0.2.1"
+port: 23120
 description: >-
   Run OpenCode (open-source AI coding agent) on your Umbrel. The dashboard opens
   a setup page in the browser; the official multi-arch image from Anomaly runs in
@@ -30,9 +30,9 @@ repo: https://github.com/harmalh/umbrel-opencode
 support: https://github.com/harmalh/umbrel-opencode/issues
 gallery: []
 releaseNotes: >-
-  Real OpenCode service: official ghcr.io/anomalyco/opencode (beta) with
-  persistent HOME=/data and workspace directory; nginx landing page with exec
-  instructions.
+  Publish on port 23120 instead of 80 so Umbrel app_proxy does not collide with
+  host services. Pin ghcr.io/anomalyco/opencode:beta to a tested digest for
+  reproducible installs.
 dependencies: []
 path: ""
 defaultUsername: ""
